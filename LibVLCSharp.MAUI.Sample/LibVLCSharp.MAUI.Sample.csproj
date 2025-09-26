@@ -48,13 +48,14 @@
 	
 
 	<ItemGroup>
+		<PackageReference Include="LibVLCSharp.MAUI" Version="3.9.*" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 	</ItemGroup>
 
 	
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\src\LibVLCSharp.MAUI\LibVLCSharp.MAUI.csproj" />
+	  <!--<ProjectReference Include="..\..\src\LibVLCSharp.MAUI\LibVLCSharp.MAUI.csproj" />-->
 	  <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.70" />
 	</ItemGroup>
 

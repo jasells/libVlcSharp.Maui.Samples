@@ -9,9 +9,7 @@ namespace LibVLCSharp.MAUI.Sample
 
         public MainViewModel()
         {
-#if !WINDOWS
-            Initialize();
-#endif
+
         }
 
         private LibVLC LibVLC { get; set; }
@@ -46,9 +44,14 @@ namespace LibVLCSharp.MAUI.Sample
             };
         }
 
+
         public void OnAppearing()
         {
+#if !WINDOWS
+            Initialize();
+#endif
             IsLoaded = true;
+
             Play();
         }
 
@@ -56,6 +59,7 @@ namespace LibVLCSharp.MAUI.Sample
         {
             MediaPlayer.Dispose();
             LibVLC.Dispose();
+            IsLoaded = false;
         }
 
         public void OnVideoViewInitialized()
