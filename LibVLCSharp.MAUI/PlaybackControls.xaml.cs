@@ -379,7 +379,7 @@ namespace LibVLCSharp.MAUI
         /// <summary>
         /// Identifies the <see cref="VideoView"/> dependency property.
         /// </summary>
-        public static readonly BindableProperty VideoViewProperty = BindableProperty.Create(nameof(VideoView), typeof(VideoView),
+        public static readonly BindableProperty VideoViewProperty = BindableProperty.Create(nameof(VideoView), typeof(VideoSurface),
             typeof(PlaybackControls),
             propertyChanged: (bindable, oldValue, newValue) => ((PlaybackControls)bindable).Manager.VideoView = (IVideoControl)newValue);
 
@@ -387,9 +387,9 @@ namespace LibVLCSharp.MAUI
         /// Gets or sets the associated <see cref="VideoView"/>.
         /// </summary>
         /// <remarks>It is only useful to set this property for the aspect ratio feature.</remarks>
-        public VideoView? VideoView
+        public VideoSurface? VideoView
         {
-            get => (VideoView)GetValue(VideoViewProperty);
+            get => (VideoSurface)GetValue(VideoViewProperty);
             set => SetValue(VideoViewProperty, value);
         }
 

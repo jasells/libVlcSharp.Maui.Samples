@@ -16,7 +16,7 @@
             builder.ConfigureMauiHandlers(handlers =>
             {
 #if ANDROID || IOS || WINDOWS
-                handlers.AddHandler(typeof(VideoView), typeof(VideoViewHandler));
+                handlers.AddHandler(typeof(VideoSurface), typeof(VideoSurfaceHandler));
 #else
             //.net8 core has no impl, but we need to define it so that the package can be added to a .Net8 x-plat project
             // for linking purposes.  At runtime, the correct platform-specific lib will be loaded, as any Maui-app solution will 

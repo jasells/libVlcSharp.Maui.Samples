@@ -5,20 +5,20 @@ namespace LibVLCSharp.MAUI
     /// <summary>
     /// 
     /// </summary>
-    public partial class VideoViewHandler
+    public partial class VideoSurfaceHandler
     {
         /// <summary>
         /// 
         /// </summary>
-        public static IPropertyMapper<VideoView, VideoViewHandler> PropertyMapper = new PropertyMapper<VideoView, VideoViewHandler>(ViewMapper)
+        public static IPropertyMapper<VideoSurface, VideoSurfaceHandler> PropertyMapper = new PropertyMapper<VideoSurface, VideoSurfaceHandler>(ViewMapper)
         {
-            [nameof(VideoView.MediaPlayer)] = MapMediaPlayer
+            [nameof(VideoSurface.MediaPlayer)] = MapMediaPlayer
         };
 
         /// <summary>
         /// 
         /// </summary>
-        public VideoViewHandler() : base(PropertyMapper)
+        public VideoSurfaceHandler() : base(PropertyMapper)
         {
         }
 
@@ -27,7 +27,7 @@ namespace LibVLCSharp.MAUI
         /// </summary>
         /// <param name="handler"></param>
         /// <param name="view"></param>
-        public static void MapMediaPlayer(VideoViewHandler handler, VideoView view)
+        public static void MapMediaPlayer(VideoSurfaceHandler handler, VideoSurface view)
         {
             handler.PlatformView.MediaPlayer = view.MediaPlayer;
         }

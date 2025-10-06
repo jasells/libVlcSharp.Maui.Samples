@@ -7,7 +7,7 @@ namespace LibVLCSharp.MAUI
     /// <summary>
     /// Generic MAUI VideoView
     /// </summary>
-    public class VideoView : View, IVideoControl
+    public class VideoSurface : View, IVideoControl
     {
         /// <summary>
         /// Raised when a new MediaPlayer is set and will be attached to the view
@@ -24,7 +24,7 @@ namespace LibVLCSharp.MAUI
         /// </summary>
         public static readonly BindableProperty MediaPlayerProperty = BindableProperty.Create(nameof(MediaPlayer),
                 typeof(LibVLCSharp.Shared.MediaPlayer),
-                typeof(VideoView),
+                typeof(VideoSurface),
                 propertyChanging: OnMediaPlayerChanging,
                 propertyChanged: OnMediaPlayerChanged);
 
@@ -39,14 +39,14 @@ namespace LibVLCSharp.MAUI
 
         private static void OnMediaPlayerChanging(BindableObject bindable, object oldValue, object newValue)
         {
-            var videoView = (VideoView)bindable;
+            var videoView = (VideoSurface)bindable;
             Debug.WriteLine("OnMediaPlayerChanging");
             videoView.MediaPlayerChanging?.Invoke(videoView, new MediaPlayerChangingEventArgs(oldValue as LibVLCSharp.Shared.MediaPlayer, newValue as LibVLCSharp.Shared.MediaPlayer));
         }
 
         private static void OnMediaPlayerChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            var videoView = (VideoView)bindable;
+            var videoView = (VideoSurface)bindable;
             Debug.WriteLine("OnMediaPlayerChanged");
             videoView.MediaPlayerChanged?.Invoke(videoView, new MediaPlayerChangedEventArgs(oldValue as LibVLCSharp.Shared.MediaPlayer, newValue as LibVLCSharp.Shared.MediaPlayer));
         }

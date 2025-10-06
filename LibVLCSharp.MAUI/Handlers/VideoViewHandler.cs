@@ -14,7 +14,7 @@ namespace LibVLCSharp.MAUI
     /// <summary>
     /// MAUI view handler for the VideoView
     /// </summary>
-    public partial class VideoViewHandler : ViewHandler<VideoView, VideoViewImpl>
+    public partial class VideoSurfaceHandler : ViewHandler<VideoSurface, VideoViewImpl>
     {
         /// <inheritdoc />
         protected override void ConnectHandler(VideoViewImpl platformView) => base.ConnectHandler(platformView);

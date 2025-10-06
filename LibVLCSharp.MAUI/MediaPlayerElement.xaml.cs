@@ -127,15 +127,15 @@ namespace LibVLCSharp.MAUI
         /// <summary>
         /// Identifies the <see cref="VideoView"/> dependency property.
         /// </summary>
-        private static readonly BindableProperty VideoViewProperty = BindableProperty.Create(nameof(VideoView), typeof(VideoView),
+        private static readonly BindableProperty VideoViewProperty = BindableProperty.Create(nameof(VideoView), typeof(VideoSurface),
          typeof(MediaPlayerElement), propertyChanged: VideoViewPropertyChanged);
 
         /// <summary>
         /// Gets or sets the video view.
         /// </summary>
-        public VideoView? VideoView
+        public VideoSurface? VideoView
         {
-            get => (VideoView)GetValue(VideoViewProperty);
+            get => (VideoSurface)GetValue(VideoViewProperty);
             private set => SetValue(VideoViewProperty, value);
         }
 
@@ -151,7 +151,7 @@ namespace LibVLCSharp.MAUI
             set => SetValue(EnableRendererDiscoveryProperty, value);
         }
 
-        private void OnVideoViewChanged(VideoView videoView)
+        private void OnVideoViewChanged(VideoSurface videoView)
         {
             if (videoView != null)
             {
@@ -209,7 +209,7 @@ namespace LibVLCSharp.MAUI
 
         private static void VideoViewPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            ((MediaPlayerElement)bindable).OnVideoViewChanged((VideoView)newValue);
+            ((MediaPlayerElement)bindable).OnVideoViewChanged((VideoSurface)newValue);
         }
 
         private static void LibVLCPropertyChanged(BindableObject bindable, object oldValue, object newValue)
@@ -247,7 +247,7 @@ namespace LibVLCSharp.MAUI
 
                 if (VideoView == null)
                 {
-                    VideoView = new VideoView();
+                    VideoView = new VideoSurface();
                 }
 
                 if (PlaybackControls == null)
@@ -294,7 +294,7 @@ namespace LibVLCSharp.MAUI
         {
             if (sender is Page page && page == this.FindAncestor<Page>())
             {
-                VideoView = new VideoView();
+                VideoView = new VideoSurface();
                 var mediaPlayer = MediaPlayer;
                 if (mediaPlayer != null)
                 {

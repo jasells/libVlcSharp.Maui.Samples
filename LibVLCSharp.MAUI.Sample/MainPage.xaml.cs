@@ -31,7 +31,7 @@ namespace LibVLCSharp.MAUI.Sample
             Debug.WriteLine("==== MainPage OnAppearing");
             base.OnAppearing();
 #if !WINDOWS
-            Content = vid = new VideoView
+            Content = vid = new VideoSurface
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Fill,
@@ -83,7 +83,7 @@ namespace LibVLCSharp.MAUI.Sample
         private void VideoView_HandlerChanged(object sender, EventArgs e)
         {
 #if WINDOWS
-            var windowsView = ((LibVLCSharp.Platforms.Windows.VideoView)VideoView.Handler.PlatformView);
+            var windowsView = ((LibVLCSharp.Platforms.Windows.VideoView)VideoSurface.Handler.PlatformView);
 
             windowsView.Initialized += (s, e) =>
             {
@@ -93,6 +93,6 @@ namespace LibVLCSharp.MAUI.Sample
 #endif
         }
 
-        private VideoView vid;
+        private VideoSurface vid;
     }
 }
