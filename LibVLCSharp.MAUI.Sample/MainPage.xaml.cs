@@ -1,4 +1,5 @@
 ﻿using LibVLCSharp.Shared;
+using System.Diagnostics;
 
 namespace LibVLCSharp.MAUI.Sample
 {
@@ -7,20 +8,48 @@ namespace LibVLCSharp.MAUI.Sample
         public MainPage()
         {
             InitializeComponent();
+
+            App.StateService.StateChanged += (s, e) =>
+            {
+                Debug.WriteLine($"==== App StateChanged: {App.StateService.State}");
+                if (App.StateService.State == AppState.Activated)
+                {
+                   Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(500), OnAppearing);
+                }
+                else if (App.StateService.State == AppState.Deactivated)
+                {
+                    OnDisappearing();
+                }
+            };
         }
 
         protected override void OnAppearing()
         {
+            Debug.WriteLine("==== MainPage OnAppearing");
             base.OnAppearing();
 #if !WINDOWS
+            Content = vid = new VideoView
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+            };
+
             ((MainViewModel)BindingContext).OnAppearing();
+
+            vid.MediaPlayerChanged += VideoView_MediaPlayerChanged;
+            vid.MediaPlayer = ((MainViewModel)BindingContext).MediaPlayer;
 #endif
+
+            this.ForceLayout();
+            this.InvalidateMeasure();
         }
 
         protected override void OnDisappearing()
         {
+            Debug.WriteLine("==== MainPage OnDisappearing");
             base.OnDisappearing();
             ((MainViewModel)BindingContext).OnDisappearing();
+            vid.MediaPlayerChanged += VideoView_MediaPlayerChanged;
         }
 
         private void VideoView_MediaPlayerChanged(object sender, MediaPlayerChangedEventArgs e)
@@ -40,5 +69,7 @@ namespace LibVLCSharp.MAUI.Sample
             };
 #endif
         }
+
+        private VideoView vid;
     }
 }
