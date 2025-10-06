@@ -1,13 +1,14 @@
-﻿using System;
+﻿using LibVLCSharp.Shared;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using LibVLCSharp.Shared;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace LibVLCSharp.MAUI;
 
-/// <summary>
-/// Generic MAUI VideoView
-/// </summary>
-public class VideoSurface : View, IVideoControl
+public class VideoView : ContentView
 {
     /// <summary>
     /// Raised when a new MediaPlayer is set and will be attached to the view
@@ -39,15 +40,35 @@ public class VideoSurface : View, IVideoControl
 
     private static void OnMediaPlayerChanging(BindableObject bindable, object oldValue, object newValue)
     {
-        var surface = (VideoSurface)bindable;
+        var videoView = (VideoView)bindable;
         Debug.WriteLine("OnMediaPlayerChanging");
-        surface.MediaPlayerChanging?.Invoke(surface, new MediaPlayerChangingEventArgs(oldValue as LibVLCSharp.Shared.MediaPlayer, newValue as LibVLCSharp.Shared.MediaPlayer));
+        videoView.MediaPlayerChanging?.Invoke(videoView, new MediaPlayerChangingEventArgs(oldValue as LibVLCSharp.Shared.MediaPlayer, newValue as LibVLCSharp.Shared.MediaPlayer));
     }
 
     private static void OnMediaPlayerChanged(BindableObject bindable, object oldValue, object newValue)
     {
-        var surface = (VideoSurface)bindable;
+        var videoView = (VideoView)bindable;
         Debug.WriteLine("OnMediaPlayerChanged");
-        surface.MediaPlayerChanged?.Invoke(surface, new MediaPlayerChangedEventArgs(oldValue as LibVLCSharp.Shared.MediaPlayer, newValue as LibVLCSharp.Shared.MediaPlayer));
+
+        if (newValue is LibVLCSharp.Shared.MediaPlayer newPlayer)
+        {
+            videoView.surface.MediaPlayer = newPlayer;
+
+            videoView.MediaPlayerChanged?.Invoke(videoView, new MediaPlayerChangedEventArgs(oldValue as LibVLCSharp.Shared.MediaPlayer, newPlayer));
+        }
     }
+
+    public VideoView()
+    {
+        Content = surface = new VideoSurface
+        {
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+        };
+        ((VideoSurface)Content).MediaPlayerChanging += (s, e) => MediaPlayerChanging?.Invoke(this, e);
+        ((VideoSurface)Content).MediaPlayerChanged += (s, e) => MediaPlayerChanged?.Invoke(this, e);
+    }
+
+    private VideoSurface surface;
+
 }
