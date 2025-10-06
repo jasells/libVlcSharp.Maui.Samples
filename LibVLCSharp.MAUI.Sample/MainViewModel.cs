@@ -47,18 +47,25 @@ namespace LibVLCSharp.MAUI.Sample
         public void OnAppearing()
         {
 #if !WINDOWS
+            if (IsLoaded == false)
             Initialize();
 #endif
             IsLoaded = true;
             Play();
+            MediaPlayer.Position = lastPosition;
+
         }
 
         internal void OnDisappearing()
         {
+            MediaPlayer.Pause();
+
+            lastPosition = MediaPlayer.Position;
+
             MediaPlayer.Stop();
-            MediaPlayer.Dispose();
-            LibVLC.Dispose();
         }
+
+        float lastPosition = 0; 
 
         public void OnVideoViewInitialized()
         {

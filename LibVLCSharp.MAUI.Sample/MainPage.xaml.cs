@@ -9,6 +9,9 @@ namespace LibVLCSharp.MAUI.Sample
         {
             InitializeComponent();
 
+            // todo: need to POC a shell-nav scenario where we create a new instance of this 
+            //page so we can see how the lifecycle events work. Probably need to move this to 
+            // OnNavigatedTo override and remove handler in OnNavigatedFrom override...
             App.StateService.StateChanged += (s, e) =>
             {
                 Debug.WriteLine($"==== App StateChanged: {App.StateService.State}");
