@@ -54,7 +54,7 @@
 	
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\src\LibVLCSharp.MAUI\LibVLCSharp.MAUI.csproj" />
+	  <ProjectReference Include="..\LibVLCSharp.MAUI\LibVLCSharp.MAUI.csproj" />
 	  <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.70" />
 	</ItemGroup>
 
