@@ -14,7 +14,8 @@ namespace LibVLCSharp.MAUI.Sample
                 Debug.WriteLine($"==== App StateChanged: {App.StateService.State}");
                 if (App.StateService.State == AppState.Activated)
                 {
-                   Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(500), OnAppearing);
+                   //Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(500), OnAppearing);
+                   OnAppearing();
                 }
                 else if (App.StateService.State == AppState.Deactivated)
                 {
@@ -49,7 +50,7 @@ namespace LibVLCSharp.MAUI.Sample
             Debug.WriteLine("==== MainPage OnDisappearing");
             base.OnDisappearing();
             ((MainViewModel)BindingContext).OnDisappearing();
-            vid.MediaPlayerChanged += VideoView_MediaPlayerChanged;
+            vid.MediaPlayerChanged -= VideoView_MediaPlayerChanged;
         }
 
         private void VideoView_MediaPlayerChanged(object sender, MediaPlayerChangedEventArgs e)

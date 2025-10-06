@@ -55,6 +55,7 @@ namespace LibVLCSharp.MAUI.Sample
 
         internal void OnDisappearing()
         {
+            MediaPlayer.Stop();
             MediaPlayer.Dispose();
             LibVLC.Dispose();
         }
