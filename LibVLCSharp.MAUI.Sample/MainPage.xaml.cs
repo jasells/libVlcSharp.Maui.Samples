@@ -9,22 +9,21 @@ namespace LibVLCSharp.MAUI.Sample
         {
             InitializeComponent();
 
-            // todo: need to POC a shell-nav scenario where we create a new instance of this 
-            //page so we can see how the lifecycle events work. Probably need to move this to 
-            // OnNavigatedTo override and remove handler in OnNavigatedFrom override...
-            App.StateService.StateChanged += (s, e) =>
+            
+        }
+
+        private void AppStateChanged(object s, AppState e)
+        {
+            Debug.WriteLine($"==== App StateChanged: {App.StateService.State}");
+            if (App.StateService.State == AppState.Activated)
             {
-                Debug.WriteLine($"==== App StateChanged: {App.StateService.State}");
-                if (App.StateService.State == AppState.Activated)
-                {
-                   //Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(500), OnAppearing);
-                   OnAppearing();
-                }
-                else if (App.StateService.State == AppState.Deactivated)
-                {
-                    OnDisappearing();
-                }
-            };
+                //Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(500), OnAppearing);
+                OnAppearing();
+            }
+            else if (App.StateService.State == AppState.Deactivated)
+            {
+                OnDisappearing();
+            }
         }
 
         protected override void OnAppearing()
@@ -44,8 +43,27 @@ namespace LibVLCSharp.MAUI.Sample
             vid.MediaPlayer = ((MainViewModel)BindingContext).MediaPlayer;
 #endif
 
+
             this.ForceLayout();
             this.InvalidateMeasure();
+        }
+
+        protected override void OnNavigatedFrom(NavigatedFromEventArgs args)
+        {
+            base.OnNavigatedFrom(args);
+
+            // if we navigate away from this page, we should unsubscribe
+            App.StateService.StateChanged -= AppStateChanged;
+        }
+
+        protected override void OnNavigatedTo(NavigatedToEventArgs args)
+        {
+            base.OnNavigatedTo(args);
+
+            // todo: need to POC a shell-nav scenario where we create a new instance of this 
+            //page so we can see how the lifecycle events work. Probably need to move this to 
+            // OnNavigatedTo override and remove handler in OnNavigatedFrom override...
+            App.StateService.StateChanged += AppStateChanged;
         }
 
         protected override void OnDisappearing()
@@ -55,6 +73,7 @@ namespace LibVLCSharp.MAUI.Sample
             ((MainViewModel)BindingContext).OnDisappearing();
             vid.MediaPlayerChanged -= VideoView_MediaPlayerChanged;
         }
+
 
         private void VideoView_MediaPlayerChanged(object sender, MediaPlayerChangedEventArgs e)
         {
