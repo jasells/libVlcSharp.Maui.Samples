@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:shared="clr-namespace:LibVLCSharp.MAUI;assembly=LibVLCSharp.MAUI"
+             x:Class="LibVLCSharp.MAUI.Sample.MainPage1"
+             Title="MainPage1">
+    <!--<shared:VideoView x:Name="VideoView"
+                      MediaPlayer="{Binding MediaPlayer}"
+                      MediaPlayerChanged="VideoView_MediaPlayerChanged"
+                      HorizontalOptions="FillAndExpand"
+                      VerticalOptions="FillAndExpand"
+                      HandlerChanged="VideoView_HandlerChanged" />-->
+    <shared:VideoView x:Name="VideoView"
+                      HorizontalOptions="FillAndExpand"
+                      VerticalOptions="FillAndExpand" />
+</ContentPage>
