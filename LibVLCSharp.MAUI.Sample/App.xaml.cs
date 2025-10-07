@@ -5,7 +5,7 @@ namespace LibVLCSharp.MAUI.Sample;
 
 public partial class App : Application
 {
-    internal static StateService StateService { get; } = new StateService();
+    //internal static StateService StateService { get; } = new StateService();
 
     public App()
     {
@@ -16,6 +16,7 @@ public partial class App : Application
 
     protected override Window CreateWindow(IActivationState activationState)
     {
-        return base.CreateWindow(activationState).SetupVlc(StateService);
+        return base.CreateWindow(activationState)
+                   .SetupVlc(IPlatformApplication.Current.Services.GetRequiredService<IAppStateManager>());
     }
 }

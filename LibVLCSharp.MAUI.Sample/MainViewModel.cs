@@ -1,84 +1,83 @@
 ﻿using LibVLCSharp.Shared;
 using System.ComponentModel;
 
-namespace LibVLCSharp.MAUI.Sample
+namespace LibVLCSharp.MAUI.Sample;
+
+public class MainViewModel : INotifyPropertyChanged
 {
-    public class MainViewModel : INotifyPropertyChanged
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    public MainViewModel()
     {
-        public event PropertyChangedEventHandler PropertyChanged;
 
-        public MainViewModel()
+    }
+
+    private LibVLC LibVLC { get; set; }
+
+    private Shared.MediaPlayer _mediaPlayer;
+    public Shared.MediaPlayer MediaPlayer
+    {
+        get => _mediaPlayer;
+        private set => Set(nameof(MediaPlayer), ref _mediaPlayer, value);
+    }
+
+    private bool IsLoaded { get; set; }
+    private bool IsVideoViewInitialized { get; set; }
+
+    private void Set<T>(string propertyName, ref T field, T value)
+    {
+        if (field == null && value != null || field != null && !field.Equals(value))
         {
-
+            field = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+    }
 
-        private LibVLC LibVLC { get; set; }
+    internal void Initialize(string[] swapchainOptions = null)
+    {
+        LibVLC = new LibVLC(enableDebugLogs: true, swapchainOptions);
+        using var media = new Media(LibVLC, new Uri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"));
 
-        private Shared.MediaPlayer _mediaPlayer;
-        public Shared.MediaPlayer MediaPlayer
+        MediaPlayer = new Shared.MediaPlayer(LibVLC)
         {
-            get => _mediaPlayer;
-            private set => Set(nameof(MediaPlayer), ref _mediaPlayer, value);
-        }
+            Media = media
+        };
+    }
 
-        private bool IsLoaded { get; set; }
-        private bool IsVideoViewInitialized { get; set; }
-
-        private void Set<T>(string propertyName, ref T field, T value)
-        {
-            if (field == null && value != null || field != null && !field.Equals(value))
-            {
-                field = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        internal void Initialize(string[] swapchainOptions = null)
-        {
-            LibVLC = new LibVLC(enableDebugLogs: true, swapchainOptions);
-            using var media = new Media(LibVLC, new Uri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"));
-
-            MediaPlayer = new Shared.MediaPlayer(LibVLC)
-            {
-                Media = media
-            };
-        }
-
-        public void OnAppearing()
-        {
+    public void OnAppearing()
+    {
 #if !WINDOWS
-            if (IsLoaded == false)
-            Initialize();
+        if (IsLoaded == false)
+        Initialize();
 #endif
-            IsLoaded = true;
-            Play();
-            MediaPlayer.Position = lastPosition;
+        IsLoaded = true;
+        Play();
+        MediaPlayer.Position = lastPosition;
 
-        }
+    }
 
-        internal void OnDisappearing()
+    internal void OnDisappearing()
+    {
+        MediaPlayer.Pause();
+
+        lastPosition = MediaPlayer.Position;
+
+        MediaPlayer.Stop();
+    }
+
+    float lastPosition = 0; 
+
+    public void OnVideoViewInitialized()
+    {
+        IsVideoViewInitialized = true;
+        Play();
+    }
+
+    private void Play()
+    {
+        if (IsLoaded && IsVideoViewInitialized)
         {
-            MediaPlayer.Pause();
-
-            lastPosition = MediaPlayer.Position;
-
-            MediaPlayer.Stop();
-        }
-
-        float lastPosition = 0; 
-
-        public void OnVideoViewInitialized()
-        {
-            IsVideoViewInitialized = true;
-            Play();
-        }
-
-        private void Play()
-        {
-            if (IsLoaded && IsVideoViewInitialized)
-            {
-                MediaPlayer.Play();
-            }
+            MediaPlayer.Play();
         }
     }
 }
