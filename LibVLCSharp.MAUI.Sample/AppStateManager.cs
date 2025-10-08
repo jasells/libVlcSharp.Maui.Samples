@@ -29,6 +29,25 @@ public static class AppStateExtensions
 
         return rootMauiWindow;
     }
+
+    public static T SetupVlcAppManager<T>(this T app)
+            where T : Application
+    {
+        // register for app-state changes
+        app.ChildAdded += (s, e) =>
+        {
+            System.Diagnostics.Debug.WriteLine($"==== App ChildAdded: {e.Element.GetType()}");
+
+            if (e.Element is Window window)
+            {
+                window.SetupVlc(IPlatformApplication.Current
+                                                  .Services
+                                                  .GetRequiredService<IAppStateManager>());
+            }
+        };
+
+        return app;
+    }
 }
 
 internal class AppStateManager : IAppStateManager

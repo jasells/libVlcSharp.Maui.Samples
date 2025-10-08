@@ -12,11 +12,14 @@ public partial class App : Application
         InitializeComponent();
 
         MainPage = new AppShell();
+
+        ChildAdded += (s, e) => Debug.WriteLine($"==== App ChildAdded: {e.GetType()}");
     }
 
     protected override Window CreateWindow(IActivationState activationState)
     {
-        return base.CreateWindow(activationState)
-                   .SetupVlc(IPlatformApplication.Current.Services.GetRequiredService<IAppStateManager>());
+        Debug.WriteLine("==== App CreateWindow");
+        return base.CreateWindow(activationState);
+                   //.SetupVlc(IPlatformApplication.Current.Services.GetRequiredService<IAppStateManager>());
     }
 }

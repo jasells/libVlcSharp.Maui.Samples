@@ -32,7 +32,12 @@ public partial class MainPage : ContentPage
     {
         Debug.WriteLine("==== MainPage OnAppearing");
         base.OnAppearing();
+
 #if !WINDOWS
+        // Android needs a new view created _every_ time the window re-appears to restart
+        // rendering, so this code is primarily for Android. iOS seems to be able to re-use
+        // the same view instance, but doing it this way works for both platforms,
+        // without more complicated checks.
         Content = vid = new VideoView
         {
             HorizontalOptions = LayoutOptions.Fill,
@@ -73,12 +78,15 @@ public partial class MainPage : ContentPage
         Debug.WriteLine("==== MainPage OnDisappearing");
         base.OnDisappearing();
         ((MainViewModel)BindingContext).OnDisappearing();
+#if ANDROID
         vid.MediaPlayerChanged -= VideoView_MediaPlayerChanged;
+#endif
     }
 
 
     private void VideoView_MediaPlayerChanged(object sender, MediaPlayerChangedEventArgs e)
     {
+        Debug.WriteLine("==== VideoView_MediaPlayerChanged");
         ((MainViewModel)BindingContext).OnVideoViewInitialized();
     }
 
