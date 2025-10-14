@@ -8,4 +8,5 @@
 
     <ShellContent ContentTemplate="{DataTemplate local:LaunchPage}" Route="LaunchPage" />
     <ShellContent ContentTemplate="{DataTemplate local:MainPage}" Route="MainPage" />
+    <ShellContent ContentTemplate="{DataTemplate local:MediaElementPage}" Route="MediaElementPage" />
 </Shell>

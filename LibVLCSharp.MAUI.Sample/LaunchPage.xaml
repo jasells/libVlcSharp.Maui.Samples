@@ -4,9 +4,15 @@
              x:Class="LibVLCSharp.MAUI.Sample.LaunchPage"
              Title="LaunchPage">
     <VerticalStackLayout>
+        <Label Text="Samples"/>
         <Button 
-            Text="Go to MainPage"
+            Text="Go to VideoView"
             Clicked="OnGoToMainPageClicked"
+            VerticalOptions="CenterAndExpand" 
+            HorizontalOptions="CenterAndExpand" />
+        <Button 
+            Text="Go to MediaElement"
+            Clicked="OnGoToMediaElementPageClicked"
             VerticalOptions="CenterAndExpand" 
             HorizontalOptions="CenterAndExpand" />
     </VerticalStackLayout>

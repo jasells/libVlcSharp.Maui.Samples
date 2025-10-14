@@ -8,6 +8,7 @@
 
             Routing.RegisterRoute(nameof(MainPage), typeof(MainPage));
             Routing.RegisterRoute(nameof(LaunchPage), typeof(LaunchPage));
+            Routing.RegisterRoute(nameof(MediaElementPage), typeof(MediaElementPage));
         }
     }
 }
