@@ -15,4 +15,10 @@ public partial class MediaElementPage : ContentPage
         ((MainViewModel)BindingContext).OnAppearing();
 #endif
     }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        ((MainViewModel)BindingContext).OnDisappearing();
+    }
 }
