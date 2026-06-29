@@ -10,10 +10,20 @@
             Clicked="OnGoToMainPageClicked"
             VerticalOptions="CenterAndExpand" 
             HorizontalOptions="CenterAndExpand" />
-        <Button 
+        <Button
             Text="Go to MediaElement"
             Clicked="OnGoToMediaElementPageClicked"
-            VerticalOptions="CenterAndExpand" 
+            VerticalOptions="CenterAndExpand"
+            HorizontalOptions="CenterAndExpand" />
+        <Button
+            x:Name="StressBtn"
+            Text="Run dispose-race stress (#659)"
+            Clicked="OnRunStressClicked"
+            VerticalOptions="CenterAndExpand"
+            HorizontalOptions="CenterAndExpand" />
+        <Label
+            x:Name="StressStatus"
+            Text=""
             HorizontalOptions="CenterAndExpand" />
     </VerticalStackLayout>
 </ContentPage>

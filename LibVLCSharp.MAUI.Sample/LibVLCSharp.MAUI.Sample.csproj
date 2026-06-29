@@ -1,8 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0-android;net8.0-ios</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
+		<TargetFrameworks>net9.0-android</TargetFrameworks>
+		<!-- Issue #659: Debug-Fork is a custom configuration (see the Debug-Fork PropertyGroup below). -->
+		<Configurations>Debug;Release;Debug-Fork</Configurations>
 		<OutputType>Exe</OutputType>
 		<RootNamespace>LibVLCSharp.MAUI.Sample</RootNamespace>
 		<UseMaui>true</UseMaui>
@@ -27,6 +28,16 @@
 		<DefaultLanguage>en</DefaultLanguage>
 	</PropertyGroup>
 
+	<!-- Issue #659: 'Debug-Fork' behaves like Debug, but references the patched XDev fork package
+	     and defines ANDROID_REPRO, which enables the LibVLCSharpDiagnostics.Warning subscription in
+	     MauiProgram. Standard 'Debug' references the public package and reproduces the crash. -->
+	<PropertyGroup Condition="'$(Configuration)' == 'Debug-Fork'">
+		<DefineConstants>$(DefineConstants);DEBUG;TRACE;ANDROID_REPRO</DefineConstants>
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>portable</DebugType>
+		<Optimize>false</Optimize>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
@@ -49,13 +60,13 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
-	</ItemGroup>
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.70" />
 
-	
-
-	<ItemGroup>
-	  <ProjectReference Include="..\LibVLCSharp.MAUI\LibVLCSharp.MAUI.csproj" />
-	  <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.70" />
+		<!-- Issue #659 A/B toggle, selected by build configuration:
+		       Debug      -> public LibVLCSharp.MAUI                -> reproduces the crash (unpatched)
+		       Debug-Fork -> XDev.LibVLCSharp.MAUI (+ANDROID_REPRO) -> fix catches it, logs [#659 caught] -->
+		<PackageReference Include="LibVLCSharp.MAUI" Version="3.9.7.1" Condition="'$(Configuration)' != 'Debug-Fork'" />
+		<PackageReference Include="XDev.LibVLCSharp.MAUI" Version="3.9.7-alpha001" Condition="'$(Configuration)' == 'Debug-Fork'" />
 	</ItemGroup>
 
 	<ItemGroup Condition="$(TargetFramework.Contains('-android'))">
