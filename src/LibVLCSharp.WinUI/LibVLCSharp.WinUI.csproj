@@ -34,7 +34,12 @@ LibVLC needs to be installed separately, see VideoLAN.LibVLC.Windows.</Descripti
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.251106002" />
+    <!-- windowsSDk-maui9-fix (see libvlcsharp/windowsSdk-maui9-fix.md): WindowsAppSDK 1.8.x's build
+         targets copy Microsoft.Maui HybridWebView.js from a path MAUI 9.0.x does not ship, causing
+         MSB3030 in consuming MAUI 9.0.x apps (WindowsAppSDK#6032). With net10 dropped here, every
+         remaining Windows TFM pairs with MAUI <= 9.0.x, so pin the 1.7.x line. (If net10 is restored,
+         switch to a per-TFM pin: 1.7 for <net10, 1.8 for net10.) -->
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.260224002" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.7175" />
     <PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" NoWarn="NU1510" />
