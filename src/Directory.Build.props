@@ -1,0 +1,76 @@
+﻿<Project>
+  <!-- Redirect to VS2022 for legacy Xamarin TFMs (VS2026+ compatibility) -->
+  <PropertyGroup Condition="$([MSBuild]::IsOsPlatform('Windows')) And ($(TargetFramework.Contains('monoandroid')) Or $(TargetFramework.Contains('xamarin')))">
+    <VS2022Edition Condition="Exists('C:\Program Files\Microsoft Visual Studio\2022\Enterprise')">Enterprise</VS2022Edition>
+    <VS2022Edition Condition="'$(VS2022Edition)' == '' And Exists('C:\Program Files\Microsoft Visual Studio\2022\Professional')">Professional</VS2022Edition>
+    <VS2022Edition Condition="'$(VS2022Edition)' == '' And Exists('C:\Program Files\Microsoft Visual Studio\2022\Community')">Community</VS2022Edition>
+    <VS2022Root>C:\Program Files\Microsoft Visual Studio\2022\$(VS2022Edition)</VS2022Root>
+    <MSBuildExtensionsPath>$(VS2022Root)\MSBuild</MSBuildExtensionsPath>
+    <VsInstallRoot>$(VS2022Root)</VsInstallRoot>
+    <TargetFrameworkRootPath>$(VS2022Root)\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\</TargetFrameworkRootPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(TargetFramework.Contains('ios'))">
+    <DefineConstants>$(DefineConstants);IOS;APPLE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.Contains('mac'))">
+    <DefineConstants>$(DefineConstants);MAC;APPLE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.Contains('tvos'))">
+    <DefineConstants>$(DefineConstants);TVOS;APPLE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.Contains('android'))">
+    <DefineConstants>$(DefineConstants);ANDROID</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('uap')) Or '$(MSBuildProjectName)' == 'LibVLCSharp.UWP'">
+    <DefineConstants>$(DefineConstants);UWP;WINDOWS_MODERN</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.Contains('windows10')) And '$(MSBuildProjectName)' != 'LibVLCSharp.UWP'">
+    <DefineConstants>$(DefineConstants);WINUI;WINDOWS_MODERN</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'uap10.0'">
+    <DefineConstants>$(DefineConstants);UWP10_0</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="!$(DefineConstants.Contains('ANDROID')) and !$(DefineConstants.Contains('APPLE')) and !$(DefineConstants.Contains('UWP'))">
+    <DefineConstants>$(DefineConstants);DESKTOP</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Win32Debug'">
+    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Win32Release'">
+    <DefineConstants>$(DefineConstants);RELEASE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))">
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <NeutralLanguage>en</NeutralLanguage>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <Authors>VideoLAN</Authors>
+    <Owners>VideoLAN</Owners>
+    <GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Release' ">true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <UseFullSemVerForNuGet>false</UseFullSemVerForNuGet>
+    <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://code.videolan.org/videolan/LibVLCSharp</RepositoryUrl>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageReleaseNotes>https://code.videolan.org/videolan/LibVLCSharp/blob/master/NEWS</PackageReleaseNotes>
+    <VersionPrefix>3.10.0</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
+    <PackageTags>libvlc;vlc;videolan;native;c/c++;video;audio;player;media;mediaplayer;codec;ffmpeg;xamarin;graphics;ios;android;linux;windows;macos;cross-platform</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <NuGetAuditMode>all</NuGetAuditMode>
+    <NuGetAuditLevel>low</NuGetAuditLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\assets\icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
+</Project>
