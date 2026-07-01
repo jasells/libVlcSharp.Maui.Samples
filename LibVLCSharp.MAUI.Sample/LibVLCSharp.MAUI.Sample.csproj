@@ -25,6 +25,10 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<DefaultLanguage>en</DefaultLanguage>
+		<!-- The direct Microsoft.WindowsAppSDK 1.7 pin below is an intentional downgrade vs the 1.8
+		     floor transitively required by LibVLCSharp.WinUI 3.10.0 (the MSB3030 workaround). Suppress
+		     the downgrade error; this repo otherwise treats warnings as errors. -->
+		<NoWarn>$(NoWarn);NU1605</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -69,5 +73,11 @@
 	</ItemGroup>
 	<ItemGroup Condition="$(TargetFramework.Contains('-windows'))">
 		<PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.21" />
+		<!-- Workaround for MSB3030 (WindowsAppSDK#6032): force WindowsAppSDK back to the 1.7 line that
+		     MAUI 9.0.x expects, overriding the transitive 1.8.251106002 pulled by LibVLCSharp.WinUI
+		     3.10.0. A direct top-level reference wins over the transitive version (NU1605 downgrade is
+		     expected and suppressed below). This is the consumer-side workaround; the real fix is the
+		     per-TFM pin in LibVLCSharp.WinUI (libvlcsharp/windowsSdk-maui9-fix.md). -->
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.260224002" />
 	</ItemGroup>
 </Project>
