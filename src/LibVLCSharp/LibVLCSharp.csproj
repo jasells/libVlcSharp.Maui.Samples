@@ -27,9 +27,12 @@ This package also contains the views for the following platforms:
 If you need Xamarin.Forms support, see LibVLCSharp.Forms. 
 
 LibVLC needs to be installed separately, see VideoLAN.LibVLC.* packages.</Description>
-    <TargetFrameworks>netstandard2.1;netstandard2.0;netstandard1.1;net40;net471;net6.0;net8.0;net9;net10.0</TargetFrameworks>
-    <TargetFrameworks Condition="!$([MSBuild]::IsOsPlatform('Linux'))">$(TargetFrameworks);net9.0-android;net9.0-ios;net9.0-macos;net9.0-tvos;net10.0-android;net10.0-ios</TargetFrameworks>
-    <TargetFrameworks Condition="$([MSBuild]::IsOsPlatform('Windows'))">$(TargetFrameworks);monoandroid81;xamarin.ios10;xamarin.mac20</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;netstandard2.0;netstandard1.1;net40;net471;net6.0;net8.0;net9</TargetFrameworks>
+    <!-- windowsSDk-maui9-fix: trimmed to the MAUI-relevant targets that build on this Windows dev box.
+         Dropped net9.0-macos/net9.0-tvos (macOS/tvOS workloads not installed) and the classic-Xamarin
+         monoandroid81/xamarin.ios10/xamarin.mac20 TFMs (deprecated tooling; the net9.0-android path
+         uses LibVLCSharp.Android.AWindowModern instead of the classic AWindow project). -->
+    <TargetFrameworks Condition="!$([MSBuild]::IsOsPlatform('Linux'))">$(TargetFrameworks);net9.0-android;net9.0-ios</TargetFrameworks>
     <Configurations>Debug;Release;Win32Debug;Win32Release</Configurations>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeAWindow</TargetsForTfmSpecificBuildOutput>
     <RootNamespace>LibVLCSharp</RootNamespace>
