@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0-android;net8.0-ios</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
+		<TargetFrameworks>net9.0-android;net9.0-ios</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0</TargetFrameworks>
 		<OutputType>Exe</OutputType>
 		<RootNamespace>LibVLCSharp.MAUI.Sample</RootNamespace>
 		<UseMaui>true</UseMaui>
@@ -54,8 +54,11 @@
 	
 
 	<ItemGroup>
-	  <ProjectReference Include="..\LibVLCSharp.MAUI\LibVLCSharp.MAUI.csproj" />
-	  <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.70" />
+	  <!-- windowsSDk-maui9-issue: consume the official package (transitively pulls
+	       LibVLCSharp.WinUI 3.10.0 -> Microsoft.WindowsAppSDK 1.8.251106002) instead of the local
+	       LibVLCSharp.MAUI source project, to reproduce the MSB3030 HybridWebView.js conflict. -->
+	  <PackageReference Include="LibVLCSharp.MAUI" Version="3.10.0" />
+	  <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.120" />
 	</ItemGroup>
 
 	<ItemGroup Condition="$(TargetFramework.Contains('-android'))">
